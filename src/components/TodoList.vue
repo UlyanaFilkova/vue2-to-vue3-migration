@@ -4,10 +4,22 @@
     <div class="card">
       <div class="card-inner">
         <ul class="list-group">
-          <li class="list-group-item d-flex p-3" v-for="(todo, index) in todos" :key="index">
-            <div class="flex-fill">{{ todo | capitalize }}</div>
+          <li
+            v-for="(todo, index) in todos"
+            :key="index"
+            class="list-group-item d-flex p-3"
+          >
+            <div class="flex-fill">{{ capitalize(todo) }}</div>
+
             <div class="list-item-delete">
-              <button type="button" @click="removeTodo(index)" class="btn btn-danger" title="Delete">X</button>
+              <button
+                type="button"
+                title="Delete"
+                class="btn btn-danger"
+                @click="removeTodo(index)"
+              >
+                X
+              </button>
             </div>
           </li>
         </ul>
@@ -15,22 +27,20 @@
     </div>
   </div>
 </template>
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
 
-<script>
-import { mapState, mapActions } from 'vuex';
-export default {
-  name: "TodoList",
-  filters: {
-    capitalize(value) {
-      if (!value) return '';
-      return value.charAt(0).toUpperCase() + value.slice(1);
-    }
-  },
-  computed: {
-    ...mapState(['todos']),
-  },
-  methods: {
-    ...mapActions(['removeTodo']),
-  },
+const store = useStore();
+
+const todos = computed(() => store.getters.todos);
+
+const removeTodo = (index) => {
+  store.dispatch("removeTodo", index);
+};
+
+const capitalize = (value) => {
+  if (!value) return "";
+  return value.charAt(0).toUpperCase() + value.slice(1);
 };
 </script>

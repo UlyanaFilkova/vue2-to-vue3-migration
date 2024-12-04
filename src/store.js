@@ -4,6 +4,11 @@ const store = createStore({
   state: {
     todos: ["demo todo"],
   },
+  getters: {
+    todos(state) {
+      return state.todos;
+    },
+  },
   mutations: {
     addTodo(state, newTodo) {
       state.todos.push(newTodo);
