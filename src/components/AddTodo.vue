@@ -11,6 +11,7 @@
         <button
           type="button"
           class="btn btn-primary"
+          :disabled="!isInputValid"
           @click="addNewTodo"
         >
           Add
@@ -21,12 +22,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 
 const newTodo = ref("");
+
+const isInputValid = computed(() => newTodo.value.trim() !== "");
 
 const addNewTodo = () => {
   store.dispatch("addTodo", newTodo.value);
